@@ -1,8 +1,12 @@
 use std::env;
 use std::process::ExitCode;
+use std::sync::Arc;
+use std::thread::sleep;
+use std::time::Duration;
 
-use snitch_adapters::OsProcessSupervisor;
+use snitch_adapters::{InMemoryLogStore, OsProcessSupervisor};
 use snitch_application::StartSupervisedProcess;
+use snitch_domain::log::LogStore;
 use snitch_domain::process::Command;
 
 fn main() -> ExitCode {
@@ -23,11 +27,18 @@ fn main() -> ExitCode {
     };
 
     let mut supervisor = OsProcessSupervisor::new();
-    let mut use_case = StartSupervisedProcess::new(&mut supervisor);
+    let log_store: Arc<dyn LogStore> = Arc::new(InMemoryLogStore::new());
+    let mut use_case = StartSupervisedProcess::new(&mut supervisor, log_store.clone());
 
     match use_case.execute(&command) {
         Ok(process_id) => {
             println!("started process {}", process_id.value());
+
+            sleep(Duration::from_millis(500));
+            for line in log_store.lines_for(process_id) {
+                println!("[{:?}] {}", line.stream(), line.content());
+            }
+
             ExitCode::SUCCESS
         }
         Err(error) => {

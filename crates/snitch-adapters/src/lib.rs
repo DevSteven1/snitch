@@ -1,2 +1,3 @@
-// Concrete adapters (process supervision, storage, HTTP, webhooks)
-// will be added here as they are needed by the application layer.
+mod os_process_supervisor;
+
+pub use os_process_supervisor::OsProcessSupervisor;

@@ -1,0 +1,22 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/snitch-domain",
+    "crates/snitch-application",
+    "crates/snitch-adapters",
+    "crates/snitch-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/DevSteven1/snitch"
+
+[workspace.dependencies]
+snitch-domain = { path = "crates/snitch-domain" }
+snitch-application = { path = "crates/snitch-application" }
+snitch-adapters = { path = "crates/snitch-adapters" }
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+thiserror = "2"

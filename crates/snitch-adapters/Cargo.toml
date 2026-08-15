@@ -1,0 +1,10 @@
+[package]
+name = "snitch-adapters"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+snitch-domain.workspace = true
+snitch-application.workspace = true

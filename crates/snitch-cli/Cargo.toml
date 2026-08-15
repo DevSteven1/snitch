@@ -13,4 +13,3 @@ path = "src/main.rs"
 snitch-domain.workspace = true
 snitch-application.workspace = true
 snitch-adapters.workspace = true
-tokio.workspace = true

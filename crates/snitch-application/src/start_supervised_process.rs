@@ -25,7 +25,7 @@ impl<'a> StartSupervisedProcess<'a> {
 mod tests {
     use super::*;
     use snitch_domain::log::LogLine;
-    use snitch_domain::process::ProcessId as DomainProcessId;
+    use snitch_domain::process::{ExitStatus, ProcessId as DomainProcessId};
 
     #[derive(Default)]
     struct FakeSupervisor {
@@ -46,6 +46,10 @@ mod tests {
             self.next_id += 1;
             self.started.push(command.clone());
             Ok(ProcessId::new(self.next_id))
+        }
+
+        fn wait(&mut self, _process_id: ProcessId) -> Result<ExitStatus, SupervisorError> {
+            Ok(ExitStatus::new(Some(0)))
         }
     }
 
